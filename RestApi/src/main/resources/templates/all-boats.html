@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Boats</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/}">Back to dashboard</a>
+    <header class="topbar">
+        <span class="eyebrow">Fleet</span>
+        <h1 class="title">Boats</h1>
+        <p class="subtitle">Register hulls, assign owners, and track class categories.</p>
+    </header>
+
+    <section class="card">
+        <h2>Register new boat</h2>
+        <form class="form-grid" th:method="post" th:object="${boat}" th:action="@{/boat}">
+            <label class="field">
+                Owner
+                <select th:field="*{owner.id}" required>
+                    <option th:each="s: ${sailors}" th:value="${s.id}" th:text="${s.fullName}"></option>
+                </select>
+            </label>
+            <label class="field">
+                Name
+                <input th:field="*{name}" required>
+            </label>
+            <label class="field">
+                Sail number
+                <input th:field="*{sailNumber}" required>
+            </label>
+            <label class="field">
+                Class name
+                <input th:field="*{className}" required>
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Name</th>
+                <th>Sail number</th>
+                <th>Class</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="b: ${boats}">
+                <td th:text="${b.owner.fullName}"></td>
+                <td th:text="${b.name}"></td>
+                <td th:text="${b.sailNumber}"></td>
+                <td th:text="${b.className}"></td>
+                <td>
+                    <form class="row-actions" th:action="@{/boat/{id}(id=${b.id})}" th:method="get">
+                        <button class="btn btn-ghost" type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form class="row-actions" th:action="@{/boat/{id}(id=${b.id})}" th:method="delete">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+</body>
+</html>

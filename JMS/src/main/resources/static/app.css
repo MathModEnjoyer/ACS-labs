@@ -1,0 +1,238 @@
+@charset "UTF-8";
+
+:root {
+    --ink: #0b1d2a;
+    --ink-soft: #2c3e50;
+    --paper: #f6f3ee;
+    --accent: #1f6f8b;
+    --accent-2: #d97a4f;
+    --accent-3: #0e4c5a;
+    --shadow: 0 20px 45px rgba(11, 29, 42, 0.12);
+    --radius: 18px;
+    --space: 24px;
+    --font-head: "Palatino Linotype", "Book Antiqua", "URW Palladio L", serif;
+    --font-body: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(217, 122, 79, 0.25), transparent 60%),
+        radial-gradient(900px 500px at 10% 0%, rgba(31, 111, 139, 0.18), transparent 55%),
+        linear-gradient(180deg, #f8f5f0 0%, #eef3f6 100%);
+    font-family: var(--font-body);
+    min-height: 100vh;
+}
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px 56px;
+    animation: fade-in 0.7s ease-out;
+}
+
+.topbar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--accent-3);
+}
+
+.title {
+    font-family: var(--font-head);
+    font-size: 36px;
+    margin: 0;
+}
+
+.subtitle {
+    margin: 0;
+    color: var(--ink-soft);
+    max-width: 680px;
+}
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.nav-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(31, 111, 139, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 50px rgba(11, 29, 42, 0.16);
+}
+
+.nav-card h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-head);
+}
+
+.card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(15, 76, 90, 0.12);
+    margin-bottom: 26px;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-family: var(--font-head);
+}
+
+.form-grid {
+    display: grid;
+    gap: 14px;
+}
+
+.field {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--ink-soft);
+}
+
+.field input,
+.field select {
+    border: 1px solid rgba(11, 29, 42, 0.2);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    background: #fff;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(31, 111, 139, 0.25);
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(31, 111, 139, 0.4);
+    color: var(--accent);
+}
+
+.btn-danger {
+    background: var(--accent-2);
+}
+
+.table-wrap {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(31, 111, 139, 0.12);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+}
+
+thead {
+    background: rgba(31, 111, 139, 0.08);
+    text-align: left;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(11, 29, 42, 0.08);
+    font-size: 14px;
+}
+
+tbody tr {
+    animation: rise-in 0.5s ease both;
+}
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent-3);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 720px) {
+    .title {
+        font-size: 28px;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    table {
+        min-width: 520px;
+    }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Yachtsmen / Boats</title>
+    <style>
+        body            { font-family: Arial, sans-serif; background:#f5f5dc; }
+        h1,h3,h4        { color:#ff7f50; }
+        table           { border-collapse:collapse; width:65%; }
+        th,td           { border:1px solid #999; padding:8px; }
+        th              { background:#ff7f50; color:#fff; }
+        input[type=text]{ padding:5px 10px; width:200px; }
+        input[type=submit]{
+            padding:6px 15px; background:#ff7f50; color:#fff;
+            border:none; cursor:pointer;
+        }
+        input[type=submit]:hover { background:#ffa982; }
+        a.button{
+            padding:4px 10px; background:#ff7f50; color:#fff; text-decoration:none;
+            border-radius:3px;
+        }
+        a.button:hover{ background:#ffa982; }
+    </style>
+</head>
+<body>
+
+<h1>Yachtsmen &amp; Boats management</h1>
+
+<h3>Add new yachtsman</h3>
+<form action="/yachtsman" method="post">
+    <input type="hidden" name="_action" value="create"/>
+    <label>Full name:
+        <input type="text" name="fullName" required/>
+    </label>
+    <label style="margin-left:15px;">Club:
+        <input type="text" name="club"/>
+    </label>
+    <input type="submit" value="Add"/>
+</form>
+
+<hr/>
+
+<div th:if="${yachtsman != null}">
+    <h3>Yachtsman details</h3>
+
+    <table>
+        <tr><th>ID</th>        <td th:text="${yachtsman.id}"></td></tr>
+        <tr><th>Full name</th> <td th:text="${yachtsman.fullName}"></td></tr>
+        <tr><th>Club</th>      <td th:text="${yachtsman.club}"></td></tr>
+    </table>
+
+    <h4 style="margin-top:25px;">Boats</h4>
+    <div th:if="${boats == null || boats.size() == 0}">
+        <p>No boats for this yachtsman.</p>
+    </div>
+    <div th:unless="${boats == null || boats.size() == 0}">
+        <table>
+            <tr>
+                <th>ID</th><th>Name</th><th>Class</th>
+                <th>Edit</th><th>Delete</th>
+            </tr>
+
+            <tr th:each="b : ${boats}">
+                <td th:text="${b.id}"></td>
+                <td th:text="${b.name}"></td>
+                <td th:text="${b.boatClass}"></td>
+
+                <td style="text-align:center;">
+                    <a class="button" th:href="@{/boat(boatId=${b.id})}">Edit</a>
+                </td>
+
+                <td style="text-align:center;">
+                    <form action="/boat" method="post" onsubmit="return confirm('Delete this boat?');" style="margin:0;">
+                        <input type="hidden" name="_action" value="delete"/>
+                        <input type="hidden" name="boatId" th:value="${b.id}"/>
+                        <input type="hidden" name="yachtsmanId" th:value="${yachtsman.id}"/>
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h4 style="margin-top:25px;">Add new boat</h4>
+    <form action="/boat" method="post">
+        <input type="hidden" name="_action" value="create"/>
+        <input type="hidden" name="yachtsmanId" th:value="${yachtsman.id}"/>
+
+        <label>Name:
+            <input type="text" name="name" required/>
+        </label>
+        <label style="margin-left:15px;">Class:
+            <input type="text" name="boatClass"/>
+        </label>
+        <input type="submit" value="Add"/>
+    </form>
+
+    <p style="margin-top:20px;">
+        <a href="/yachtsman">← back to list</a>
+    </p>
+</div>
+
+<div th:if="${boat != null}">
+    <h3>Boat details</h3>
+
+    <form action="/boat" method="post">
+        <input type="hidden" name="_action" value="update"/>
+        <input type="hidden" name="boatId" th:value="${boat.id}"/>
+
+        <table>
+            <tr><th>ID</th>   <td th:text="${boat.id}"></td></tr>
+            <tr><th>Name</th> <td><input name="name" th:value="${boat.name}"/></td></tr>
+            <tr><th>Class</th><td><input name="boatClass" th:value="${boat.boatClass}"/></td></tr>
+        </table>
+
+        <p style="margin-top:15px;">
+            <input type="submit" value="Save changes"/>
+            <a href="/boat" class="button">← back</a>
+        </p>
+    </form>
+
+    <h4>Crew</h4>
+    <div th:if="${crew == null || crew.size() == 0}">
+        <p>No yachtsmen for this boat.</p>
+    </div>
+    <div th:unless="${crew == null || crew.size() == 0}">
+        <ul>
+            <li th:each="y : ${crew}">
+                <span th:text="${y.fullName}"></span> (<span th:text="${y.club}"></span>)
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div th:if="${boats != null && boats.size() > 0 && boat == null && yachtsman == null}">
+    <h3>All boats</h3>
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Class</th><th>Edit</th></tr>
+        <tr th:each="b : ${boats}">
+            <td th:text="${b.id}"></td>
+            <td th:text="${b.name}"></td>
+            <td th:text="${b.boatClass}"></td>
+            <td style="text-align:center;">
+                <a class="button" th:href="@{/boat(boatId=${b.id})}">View</a>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin-top:20px;">
+        <a href="/yachtsman">← back to yachtsmen</a>
+    </p>
+</div>
+
+<div th:if="${yachtsmen != null && yachtsman == null && boat == null}">
+    <div th:if="${yachtsmen.size() == 0}">
+        <p>No yachtsmen in database yet – add one above.</p>
+    </div>
+    <div th:unless="${yachtsmen.size() == 0}">
+        <h3>Current yachtsmen</h3>
+        <table>
+            <tr>
+                <th>ID</th><th>Full name</th><th>Club</th>
+                <th>Boats #</th><th>Delete</th>
+            </tr>
+
+            <tr th:each="y : ${yachtsmen}">
+                <td>
+                    <a th:href="@{/yachtsman(yachtsmanId=${y.id})}" th:text="${y.id}"></a>
+                </td>
+                <td th:text="${y.fullName}"></td>
+                <td th:text="${y.club}"></td>
+                <td>0</td>
+                <td style="text-align:center;">
+                    <form action="/yachtsman" method="post" onsubmit="return confirm('Delete yachtsman?');" style="margin:0;">
+                        <input type="hidden" name="_action" value="delete"/>
+                        <input type="hidden" name="yachtsmanId" th:value="${y.id}"/>
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

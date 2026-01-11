@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update sailor</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/sailor}">Back to sailors</a>
+    <header class="topbar">
+        <span class="eyebrow">Registry</span>
+        <h1 class="title">Update sailor</h1>
+        <p class="subtitle">Refresh profile details for the selected sailor.</p>
+    </header>
+
+    <section class="card">
+        <form class="form-grid" th:method="put" th:object="${sailor}" th:action="@{/sailor/{id}(id=${sailor.id})}">
+            <label class="field">
+                Full name
+                <input th:field="*{fullName}" required>
+            </label>
+            <label class="field">
+                Birth date
+                <input type="date" th:field="*{birthDate}" required>
+            </label>
+            <label class="field">
+                Country
+                <input th:field="*{country}" required>
+            </label>
+            <label class="field">
+                Club
+                <input th:field="*{club}">
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+                <a class="btn btn-ghost" th:href="@{/sailor}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

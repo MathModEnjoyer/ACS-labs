@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Permit update</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/permit}">Back to permits</a>
+    <header class="topbar">
+        <span class="eyebrow">Harbor</span>
+        <h1 class="title">Update permit</h1>
+        <p class="subtitle">Change berth assignment or boat selection.</p>
+    </header>
+
+    <section class="card">
+        <form id="boat-form" th:method="post" th:object="${changePermit}" th:action="@{/permit/update/boat}"></form>
+        <input id="btnBoat" hidden th:type="submit" form="boat-form"/>
+
+        <form class="form-grid" th:method="put" th:object="${permit}" th:action="@{/permit/{id}(id=${permit.id})}">
+            <label class="field">
+                Sailor
+                <input th:field="${sailor.fullName}" disabled>
+            </label>
+            <label class="field">
+                Boat
+                <select th:field="${changePermit.boat.id}" required th:onchange="document.getElementById('btnBoat').click()" form="boat-form">
+                    <option th:each="b: ${boats}" th:value="${b.id}" th:text="${b.name}"></option>
+                </select>
+            </label>
+            <input th:field="*{id}" hidden>
+            <input th:field="${changePermit.id}" hidden form="boat-form">
+            <input th:field="*{boat.id}" hidden>
+            <input th:field="*{boat.owner.id}" hidden>
+            <label class="field">
+                Berths
+                <select th:field="${changePermit.berthDto}" th:onchange="document.getElementById('btnBoat').click()" form="boat-form" required>
+                    <option th:each="b: ${berths}" th:value="|${b.berth};${b.pier}|" th:text="|Pier: ${b.pier} Berth: ${b.berth}|">
+                    </option>
+                </select>
+            </label>
+            <input th:field="*{berthDto.pier}" hidden>
+            <input th:field="*{berthDto.berth}" hidden>
+            <label class="field">
+                Club discount
+                <input type="checkbox" th:field="*{benefits}">
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+                <a class="btn btn-ghost" th:href="@{/permit}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

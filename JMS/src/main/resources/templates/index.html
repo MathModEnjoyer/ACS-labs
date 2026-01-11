@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADMIN</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <span class="eyebrow">Harbor Control</span>
+            <h1 class="title">You log in as ADMIN</h1>
+            <p class="subtitle">Manage sailors, boat registrations, and mooring permits from one console.</p>
+        </header>
+
+        <section class="nav-grid">
+            <a class="nav-card" th:href="@{/sailor}">
+                <h3>Sailors</h3>
+                <p>Profiles, clubs, and registry data.</p>
+            </a>
+            <a class="nav-card" th:href="@{/boat}">
+                <h3>Boats</h3>
+                <p>Fleet list with sail numbers and classes.</p>
+            </a>
+            <a class="nav-card" th:href="@{/permit}">
+                <h3>Mooring permits</h3>
+                <p>Issue berths and manage fees.</p>
+            </a>
+        </section>
+    </div>
+</body>
+</html>

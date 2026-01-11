@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update boat</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/boat}">Back to boats</a>
+    <header class="topbar">
+        <span class="eyebrow">Fleet</span>
+        <h1 class="title">Update boat</h1>
+        <p class="subtitle">Adjust ownership, sail number, or class details.</p>
+    </header>
+
+    <section class="card">
+        <form class="form-grid" th:method="put" th:object="${boat}" th:action="@{/boat/{id}(id=${boat.id})}">
+            <label class="field">
+                Owner
+                <select th:field="*{owner.id}" required>
+                    <option th:each="s: ${sailors}" th:value="${s.id}" th:text="${s.fullName}"></option>
+                </select>
+            </label>
+            <label class="field">
+                Name
+                <input th:field="*{name}" required>
+            </label>
+            <label class="field">
+                Sail number
+                <input th:field="*{sailNumber}" required>
+            </label>
+            <label class="field">
+                Class name
+                <input th:field="*{className}" required>
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+                <a class="btn btn-ghost" th:href="@{/boat}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

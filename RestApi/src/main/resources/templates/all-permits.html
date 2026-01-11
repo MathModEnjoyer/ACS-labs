@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mooring permits</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/}">Back to dashboard</a>
+    <header class="topbar">
+        <span class="eyebrow">Harbor</span>
+        <h1 class="title">Mooring permits</h1>
+        <p class="subtitle">Issue berth permits and manage marina fees.</p>
+    </header>
+
+    <section class="card">
+        <h2>Issue new permit</h2>
+        <form id="sailor-form" th:method="post" th:object="${sailor}" th:action="@{/permit/sailor}"></form>
+        <form id="boat-form" th:method="post" th:object="${changePermit}" th:action="@{/permit/boat}"></form>
+        <input id="btnSailor" hidden th:type="submit" form="sailor-form"/>
+        <input id="btnBoat" hidden th:type="submit" form="boat-form"/>
+
+        <form class="form-grid" th:method="post" th:object="${permit}" th:action="@{/permit}">
+            <label class="field">
+                Sailor
+                <select th:field="${sailor.id}" th:onchange="document.getElementById('btnSailor').click()" form="sailor-form" required>
+                    <option th:each="s: ${sailors}" th:value="${s.id}" th:text="${s.fullName}"></option>
+                </select>
+            </label>
+            <label class="field">
+                Boat
+                <select th:field="${changePermit.boat.id}" required th:onchange="document.getElementById('btnBoat').click()" form="boat-form">
+                    <option th:each="b: ${boats}" th:value="${b.id}" th:text="${b.name}"></option>
+                </select>
+            </label>
+            <input th:field="*{boat.id}" hidden>
+            <input th:field="*{boat.owner.id}" hidden>
+            <label class="field">
+                Berths
+                <select th:field="${changePermit.berthDto}" th:onchange="document.getElementById('btnBoat').click()" form="boat-form" required>
+                    <option th:each="b: ${berths}" th:value="|${b.berth};${b.pier}|" th:text="|Pier: ${b.pier} Berth: ${b.berth}|"></option>
+                </select>
+            </label>
+            <input th:field="*{berthDto.pier}" hidden>
+            <input th:field="*{berthDto.berth}" hidden>
+            <label class="field">
+                Club discount
+                <input type="checkbox" th:field="*{benefits}">
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Boat</th>
+                <th>Berth</th>
+                <th>Pier</th>
+                <th>Fee</th>
+                <th>Owner</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p: ${permits}">
+                <td th:text="${p.boat.name}"></td>
+                <td th:text="${p.berthDto.berth}"></td>
+                <td th:text="${p.berthDto.pier}"></td>
+                <td th:text="${p.fee}"></td>
+                <td th:text="${p.boat.owner.fullName}"></td>
+                <td>
+                    <form class="row-actions" th:action="@{/permit/{id}(id=${p.id})}" th:method="get">
+                        <button class="btn btn-ghost" type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form class="row-actions" th:action="@{/permit/{id}(id=${p.id})}" th:method="delete">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+</body>
+</html>

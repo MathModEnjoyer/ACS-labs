@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All sailors</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<div class="page">
+    <a class="back-link" th:href="@{/}">Back to dashboard</a>
+    <header class="topbar">
+        <span class="eyebrow">Registry</span>
+        <h1 class="title">Sailors</h1>
+        <p class="subtitle">Create profiles and keep the fleet roster up to date.</p>
+    </header>
+
+    <section class="card">
+        <h2>Create new sailor</h2>
+        <form class="form-grid" th:method="post" th:object="${sailor}" th:action="@{/sailor}">
+            <label class="field">
+                Full name
+                <input th:field="*{fullName}" required>
+            </label>
+            <label class="field">
+                Birth date
+                <input type="date" th:field="*{birthDate}" required>
+            </label>
+            <label class="field">
+                Country
+                <input th:field="*{country}" required>
+            </label>
+            <label class="field">
+                Club
+                <input th:field="*{club}">
+            </label>
+            <div class="actions">
+                <button class="btn" type="submit">Save</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Full name</th>
+                <th>Birth date</th>
+                <th>Country</th>
+                <th>Club</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sailor: ${sailors}">
+                <td th:text="${sailor.fullName}"></td>
+                <td th:text="${sailor.birthDate}"></td>
+                <td th:text="${sailor.country}"></td>
+                <td th:text="${sailor.club}"></td>
+                <td>
+                    <form class="row-actions" th:action="@{/sailor/{id}(id=${sailor.id})}" th:method="get">
+                        <button class="btn btn-ghost" type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form class="row-actions" th:action="@{/sailor/{id}(id=${sailor.id})}" th:method="delete">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+</body>
+</html>
